@@ -30,7 +30,7 @@
                 <td>${loop.count}</td>
                 <td>${p.name}</td>
                 <td>${p.price}</td>
-                <td><a href="product?action=edit&id=${p.getId()}">Update</a></td>
+                <td><a href="product?action=update&id=${p.getId()}">Cập nhật</a></td>
                 <td><a href="product?action=delete&id=${p.getId()}">Xóa</a></td>
             </tr>
         </c:forEach>

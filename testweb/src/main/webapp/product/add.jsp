@@ -26,20 +26,16 @@
         <legend>Thông tin sản phẩm</legend>
         <table>
             <tr>
-                <td>Id sản phẩm:</td>
-                <td><input type="number" name="id" id="id"></td>
-            </tr>
-            <tr>
                 <td>Tên sản phẩm:</td>
                 <td><input type="text" name="name" id="name"></td>
             </tr>
             <tr>
                 <td>Giá sản phẩm:</td>
-                <td><input type="text" name="price" id="price"></td>
+                <td><input type="number" name="price" id="price"></td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="Add product"></td>
+                <td><input type="submit" value="Thêm mới"></td>
             </tr>
         </table>
     </fieldset>

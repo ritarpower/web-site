@@ -112,7 +112,7 @@ public class ProductServlet extends HttpServlet {
         request.setAttribute("products", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product.jsp");
         try {
-            dispatcher.forward(request,response);
+            dispatcher.forward(request, response);
         } catch (ServletException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -133,8 +133,10 @@ public class ProductServlet extends HttpServlet {
                 break;
             case "update":
                 update(request, response);
+                break;
             case "delete":
                 delete(request, response);
+                break;
             default:
                 break;
         }
@@ -158,10 +160,9 @@ public class ProductServlet extends HttpServlet {
     }
 
     private void add(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         double price = Double.parseDouble(request.getParameter("price"));
-        Product product = new Product(id, name, price);
+        Product product = new Product(name, price);
         productService.addProduct(product);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/add.jsp");
         request.setAttribute("message", "Đã thêm mới thành công!");
@@ -189,13 +190,13 @@ public class ProductServlet extends HttpServlet {
             request.setAttribute("product", product);
             request.setAttribute("message", "Đã update thành công!");
             dispatcher = request.getRequestDispatcher("product/update.jsp");
-            try {
-                dispatcher.forward(request,response);
-            } catch (ServletException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

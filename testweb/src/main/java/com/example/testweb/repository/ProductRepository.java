@@ -7,11 +7,15 @@ import java.util.List;
 
 public class ProductRepository implements IProductRepository {
     private static final List<Product> products = new ArrayList<>();
+    private static int lastId;
+
     static {
-        products.add(new Product(1,"Iphone 16",2000));
-        products.add(new Product(2,"Samsung",1000));
-        products.add(new Product(3,"Oppo Reno",500));
+        products.add(new Product(1, "Iphone 16", 2000));
+        products.add(new Product(2, "Samsung", 1000));
+        products.add(new Product(3, "Oppo Reno", 500));
+        lastId = 3;
     }
+
     @Override
     public List<Product> findAll() {
         return products;
@@ -19,6 +23,8 @@ public class ProductRepository implements IProductRepository {
 
     @Override
     public void addProduct(Product product) {
+        lastId++;
+        product.setId(lastId);
         products.add(product);
     }
 
@@ -34,11 +40,23 @@ public class ProductRepository implements IProductRepository {
 
     @Override
     public void updateProduct(int id, Product product) {
-        products.set(id, product);
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId() == id) {
+                products.get(i).setId(product.getId());
+                products.get(i).setName(product.getName());
+                products.get(i).setPrice(product.getPrice());
+                return;
+            }
+        }
     }
 
     @Override
     public void deleteProduct(int id) {
-        products.remove(id);
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId() == id) {
+                products.remove(i);
+                return;
+            }
+        }
     }
 }
