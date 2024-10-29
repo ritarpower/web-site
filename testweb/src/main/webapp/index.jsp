@@ -9,6 +9,6 @@
 <h1><%= "Hello World!" %>
 </h1>
 <br/>
-<a href="product">Product</a>
+<a href="">Product</a>
 </body>
 </html>

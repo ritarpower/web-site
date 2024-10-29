@@ -19,7 +19,7 @@
     </c:if>
 </p>
 <p>
-    <a href="product">Quay lại danh sách sản phẩm</a>
+    <a href="/">Quay lại danh sách sản phẩm</a>
 </p>
 <form method="post">
     <fieldset>

@@ -14,7 +14,7 @@
 <body>
 <h1>Danh sách sản phẩm</h1>
 <p>
-    <a href="product?action=add">Thêm mới sản phẩm</a>
+    <a href="?action=add">Thêm mới sản phẩm</a>
 </P>
 <table>
     <thead>
@@ -28,10 +28,10 @@
         <c:forEach items="${products}" var="p" varStatus="loop">
             <tr>
                 <td>${loop.count}</td>
-                <td>${p.name}</td>
+                <td><a href="?action=view&id=${p.getId()}">${p.getName()}</a></td>
                 <td>${p.price}</td>
-                <td><a href="product?action=update&id=${p.getId()}">Cập nhật</a></td>
-                <td><a href="product?action=delete&id=${p.getId()}">Xóa</a></td>
+                <td><a href="?action=update&id=${p.getId()}">Cập nhật</a></td>
+                <td><a href="?action=delete&id=${p.getId()}">Xóa</a></td>
             </tr>
         </c:forEach>
     </tbody>
