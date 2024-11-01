@@ -1,24 +1,18 @@
 package com.example.testweb.controller;
 
-import com.example.testweb.model.IProductDAO;
 import com.example.testweb.model.Product;
-import com.example.testweb.model.ProductDAO;
+import com.example.testweb.service.IProductService;
+import com.example.testweb.service.ProductService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "ProductServlet", value = "")
 public class ProductServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private IProductDAO productDAO;
-
-    public void init() {
-        productDAO = new ProductDAO();
-    }
+    private final IProductService productService = new ProductService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,7 +52,7 @@ public class ProductServlet extends HttpServlet {
 
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productDAO.selectProduct(id);
+        Product product = productService.findProduct(id);
         RequestDispatcher dispatcher;
         if (product == null) {
             dispatcher = request.getRequestDispatcher("error-404.jsp");
@@ -77,7 +71,7 @@ public class ProductServlet extends HttpServlet {
 
     private void showDeleteForm(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productDAO.selectProduct(id);
+        Product product = productService.findProduct(id);
         RequestDispatcher dispatcher;
         if (product == null) {
             dispatcher = request.getRequestDispatcher("error-404.jsp");
@@ -96,7 +90,7 @@ public class ProductServlet extends HttpServlet {
 
     private void viewProduct(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productDAO.selectProduct(id);;
+        Product product = productService.findProduct(id);;
         RequestDispatcher dispatcher;
         if (product == null) {
             dispatcher = request.getRequestDispatcher("error-404.jsp");
@@ -114,7 +108,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     private void listProducts(HttpServletRequest request, HttpServletResponse response) {
-        List<Product> products = productDAO.selectAll();
+        List<Product> products = productService.findAll();
         request.setAttribute("products", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product.jsp");
         try {
@@ -151,16 +145,12 @@ public class ProductServlet extends HttpServlet {
 
     private void delete(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productDAO.selectProduct(id);
+        Product product = productService.findProduct(id);
         RequestDispatcher dispatcher;
         if (product == null) {
             dispatcher = request.getRequestDispatcher("error-404.jsp");
         } else {
-            try {
-                productDAO.deleteProduct(product.getId());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            productService.deleteProduct(id);
             try {
                 response.sendRedirect("/");
             } catch (IOException e) {
@@ -173,11 +163,7 @@ public class ProductServlet extends HttpServlet {
         String name = request.getParameter("name");
         double price = Double.parseDouble(request.getParameter("price"));
         Product product = new Product(name, price);
-        try {
-            productDAO.insertProduct(product);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        productService.addProduct(product);
         RequestDispatcher dispatcher = request.getRequestDispatcher("add.jsp");
         request.setAttribute("message", "Đã thêm mới thành công!");
         try {
@@ -193,18 +179,14 @@ public class ProductServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         double price = Double.parseDouble(request.getParameter("price"));
-        Product product = productDAO.selectProduct(id);
+        Product product = productService.findProduct(id);
         RequestDispatcher dispatcher;
         if (product == null) {
             dispatcher = request.getRequestDispatcher("error-404.jsp");
         } else {
             product.setName(name);
             product.setPrice(price);
-            try {
-                productDAO.updateProduct(product);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            productService.updateProduct(id ,product);
             request.setAttribute("product", product);
             request.setAttribute("message", "Đã update thành công!");
             dispatcher = request.getRequestDispatcher("update.jsp");
